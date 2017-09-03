@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:background="#605858">
+    <ImageView
+        android:id="@+id/iv_leftprofile"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:background="#836c6c"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="15dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HONG GIL-DONG"
+        android:id="@+id/tv_leftname"
+        android:layout_below="@id/iv_leftprofile"
+        android:layout_centerHorizontal="true"
+        android:textSize="18dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_leftinfo"
+        android:text="아무개과, 남, 25"
+        android:layout_below="@id/tv_leftname"
+        android:layout_centerHorizontal="true"
+        android:textSize="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_leftinfo"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="모임"
+            android:id="@+id/bt_meeting"
+            android:background="#00000000"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="익명 게시판"
+            android:id="@+id/bt_board"
+            android:background="#00000000"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="참여중인 모임"
+            android:id="@+id/bt_inprogress"
+            android:background="#00000000"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="설정"
+            android:id="@+id/bt_setting"
+            android:background="#00000000"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
