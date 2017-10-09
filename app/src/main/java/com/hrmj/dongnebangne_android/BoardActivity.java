@@ -31,19 +31,21 @@ public class BoardActivity extends AppCompatActivity {
     private ListView lv_boardroom;
     private SwipeRefreshLayout refresh;
     BoardroomAdapter boardroomAdapter;
+    private BackPressCloseHandler backPressCloseHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         boardroomAdapter = new BoardroomAdapter();
         lv_boardroom = (ListView)findViewById(R.id.lv_boardroom);
 
         lv_boardroom.setAdapter(boardroomAdapter);
 
-        boardroomAdapter.add("제목들어간다!", "미안해 솔직하지못한내가 어쩌구 저쩌구 \n글쓰는것도일이다......... abcdefg hijklmn");
-        boardroomAdapter.add("안녕?", "성명 송민지 과 컴퓨터공학과 학교 설곽\n설곽 학생들은 곽곽하고 울지요 곽곽ㄱ곽곽ㄱ곽과고가ㅗ가ㅘ과곡");
-        boardroomAdapter.add("제목들어간다!", "미안해 솔직하지못한내가 어쩌구 저쩌구 \n글쓰는것도일이다......... abcdefg hijklmn");
+        boardroomAdapter.add("게시판 제목 1", "내용1");
+        boardroomAdapter.add("게시판 제목 2", "내용 12345677890 \nabcdefghijklmn");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,11 +101,10 @@ public class BoardActivity extends AppCompatActivity {
                 bt_setting.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                         startActivity(intent);
-                        finish();
                         overridePendingTransition(0,0);
+                        slide_menu.toggleLeftDrawer();
                     }
                 });
             }
@@ -140,5 +141,10 @@ public class BoardActivity extends AppCompatActivity {
         super.onResume();
 
         boardroomAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 }

@@ -1,6 +1,7 @@
 package com.hrmj.dongnebangne_android;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,19 +99,21 @@ public class ChatAdapter extends BaseAdapter {
         text.setText(((ListContents)m_List.get(position)).msg);
 
         if(((ListContents)m_List.get(position)).type == 0) {
-            text.setBackgroundResource(R.drawable.bubble_me);
+            text.setBackgroundResource(R.drawable.your_bubble);
+            text.setTextColor(Color.parseColor("#ffffff"));
             layout.setGravity(Gravity.LEFT);
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
         }
         else if(((ListContents)m_List.get(position)).type == 1) {
-            text.setBackgroundResource(R.drawable.bubble_me);
+            text.setBackgroundResource(R.drawable.my_bubble);
+            text.setTextColor(Color.parseColor("#000000"));
             layout.setGravity(Gravity.RIGHT);
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
         }
         if(((ListContents)m_List.get(position)).type == 2) {
-            text.setBackgroundResource(R.drawable.datebg);
+            text.setBackgroundColor(Color.parseColor("#ffffffff"));
             layout.setGravity(Gravity.CENTER);
             viewRight.setVisibility(View.VISIBLE);
             viewLeft.setVisibility(View.VISIBLE);

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,14 @@ public class InprogressActivity extends AppCompatActivity {
     private ImageButton ib_menu, ib_search;
     private TextView tv_menutitle;
     private Toolbar toolbar;
+    private ListView lv_inprogress;
+    private BackPressCloseHandler backPressCloseHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inprogress);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -36,6 +41,9 @@ public class InprogressActivity extends AppCompatActivity {
         tv_menutitle.setText("참여중인 모임");
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.layout_leftmenu);
+
+        lv_inprogress = (ListView)findViewById(R.id.lv_inprogress);
+
 
         ib_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +85,10 @@ public class InprogressActivity extends AppCompatActivity {
                 bt_setting.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                         startActivity(intent);
-                        finish();
                         overridePendingTransition(0,0);
+                        slide_menu.toggleLeftDrawer();
                     }
                 });
             }
@@ -94,5 +101,10 @@ public class InprogressActivity extends AppCompatActivity {
                 return;
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 }

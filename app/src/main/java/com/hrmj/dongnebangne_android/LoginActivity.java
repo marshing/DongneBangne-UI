@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 /**
@@ -16,7 +18,8 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText et_id, et_pw;
-    private Button bt_signup, bt_login;
+    private Button bt_signup;
+    private ImageButton bt_login;
     String sId, sPw;
 
     @Override
@@ -27,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         et_id = (EditText) findViewById(R.id.et_id);
         et_pw = (EditText) findViewById(R.id.et_pw);
         bt_signup = (Button) findViewById(R.id.bt_signup);
-        bt_login = (Button) findViewById(R.id.bt_login);
+        bt_login = (ImageButton) findViewById(R.id.bt_login);
 
         et_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -80,6 +83,19 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
 
 
+            }
+        });
+
+        // 엔터키로 로그인
+        et_pw.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    bt_login.performClick();
+                    return true;
+                }
+
+                return false;
             }
         });
 

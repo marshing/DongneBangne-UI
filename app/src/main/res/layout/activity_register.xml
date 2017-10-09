@@ -2,71 +2,149 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:orientation="vertical"
-    style="@style/NoTitle">
+    style="@style/NoTitle"
+    android:background="@drawable/lg_background">
 
-    <TableLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stretchColumns="1"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:layout_marginBottom="50dp">
-        <TableRow>
-            <TextView android:text="email" />
-            <EditText
-                android:id="@+id/et_reg_id" />
-        </TableRow>
-        <TableRow>
-            <TextView android:text="code" />
-            <EditText
-                android:id="@+id/et_reg_code" />
-        </TableRow>
-        <TableRow>
-            <TextView android:text="password" />
+        android:background="@drawable/logo"
+        android:layout_marginBottom="20dp"/>
 
-            <EditText
-                android:id="@+id/et_reg_pw"
-                android:inputType="textPassword" />
-        </TableRow>
-        <TableRow>
-            <TextView android:text="password" />
 
-            <EditText
-                android:id="@+id/et_reg_pwchk"
-                android:inputType="textPassword" />
-        </TableRow>
-        <TableRow>
-            <TextView android:text="name" />
-            <EditText
-                android:id="@+id/et_reg_name" />
-        </TableRow>
-        <TableRow>
-            <TextView android:text="birth" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#41eeee"
+            android:text="email" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_reg_id"
+            android:background="@drawable/signup_blank"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#636363"
+            android:textSize="14sp"
+            android:inputType="textEmailAddress"
+            android:ems="10"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#40e7ee"
+            android:text="password"/>
 
-            <Button android:id="@+id/bt_reg_birth"
-                android:background="#00000000"/>
-        </TableRow>
-    </TableLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_reg_pw"
+            android:inputType="textPassword"
+            android:background="@drawable/signup_blank"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#636363"
+            android:textSize="14sp"
+            android:ems="10"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#11c9f2"
+            android:text="password"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_reg_pwchk"
+            android:inputType="textPassword"
+            android:background="@drawable/signup_blank"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#636363"
+            android:textSize="14sp"
+            android:ems="10"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#0fc6f3"
+            android:text="name" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_reg_name"
+            android:background="@drawable/signup_blank"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#636363"
+            android:textSize="14sp"
+            android:ems="10"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="35dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="birth"
+            android:textColor="#00b3f3"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:id="@+id/bt_reg_birth"
+            android:background="@drawable/signup_blank"
+            android:textColor="#636363"
+            android:textSize="14sp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp">
-        <Button
+        <ImageButton
             android:id="@+id/bt_rg_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SIGN UP"/>
-        <Button
-            android:id="@+id/bt_rg_cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CANCLE"/>
+            android:background="@drawable/bt_signup"/>
     </LinearLayout>
 </LinearLayout>
