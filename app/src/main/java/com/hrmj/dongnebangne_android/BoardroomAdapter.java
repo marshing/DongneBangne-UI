@@ -23,8 +23,8 @@ public class BoardroomAdapter extends BaseAdapter {
         m_List = new ArrayList<>();
     }
 
-    static public void add(String title, String content){
-        m_List.add(new Post(title, content));
+    static public void add(Post post){
+        m_List.add(post);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BoardroomAdapter extends BaseAdapter {
         final Context context = parent.getContext();
 
         TextView tv_boardTitle, tv_boardContent, tv_thumbCount, tv_recommandCount, tv_boardDate;
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd hh:mm");
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm");
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -23,8 +23,8 @@ public class ChatroomAdapter extends BaseAdapter {
         m_List = new ArrayList();
     }
 
-    public void add(User _chiefUser, int _maxNum,  String _title){
-        m_List.add(new Chatroom(_chiefUser, _maxNum, _title));
+    public void add(Chatroom chatroom){
+        m_List.add(chatroom);
     }
 
     public void remove(int _position){
@@ -39,6 +39,10 @@ public class ChatroomAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return m_List.get(position);
+    }
+
+    public int getSize() {
+        return m_List.size();
     }
 
     @Override

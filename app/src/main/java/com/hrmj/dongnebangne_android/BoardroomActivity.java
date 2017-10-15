@@ -79,9 +79,10 @@ public class BoardroomActivity extends AppCompatActivity {
             ib_recommendsend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Comment comment = new Comment(new User("송민지", "~", "`", new Date()), et_recommend.getText().toString());
+                    Comment comment = new Comment(MeetingActivity.me, et_recommend.getText().toString());
                     post.commentList.add(comment);
                     et_recommend.setText("");
+                    tv_boardroomRecommendcount.setText(""+post.commentList.size());
                     m_Adapter.notifyDataSetChanged();
                 }
             });

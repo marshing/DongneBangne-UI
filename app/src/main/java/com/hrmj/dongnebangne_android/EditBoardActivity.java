@@ -45,7 +45,7 @@ public class EditBoardActivity extends AppCompatActivity{
             public void onClick(View v) {
                 et_boardtitle = (EditText)findViewById(R.id.et_boardtitle);
                 et_boardcontent = (EditText)findViewById(R.id.et_boardcontent);
-                BoardroomAdapter.add(et_boardtitle.getText().toString(), et_boardcontent.getText().toString());
+                BoardroomAdapter.add(new Post(et_boardtitle.getText().toString(), et_boardcontent.getText().toString()));
                 finish();
 
 

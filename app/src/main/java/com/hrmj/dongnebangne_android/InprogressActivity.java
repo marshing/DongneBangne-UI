@@ -30,6 +30,7 @@ public class InprogressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inprogress);
 
+
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

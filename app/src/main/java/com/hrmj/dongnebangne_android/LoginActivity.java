@@ -77,7 +77,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MeetingActivity.class);
                 // 일단 email주소만 MainActivity로 전달 (DB구축 이후 모든 회원정보 전달)
-               // intent.putExtra("email", sId);
+                intent.putExtra("email", sId);
+                intent.putExtra("pwd", sId);
 
                 startActivity(intent);
                 finish();

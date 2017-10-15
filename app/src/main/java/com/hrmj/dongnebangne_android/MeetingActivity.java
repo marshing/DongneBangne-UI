@@ -1,5 +1,6 @@
 package com.hrmj.dongnebangne_android;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,10 +22,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.navdrawer.SimpleSideDrawer;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -33,7 +36,7 @@ import java.util.Date;
 
 public class MeetingActivity extends AppCompatActivity implements OnMapReadyCallback{
     private SimpleSideDrawer slide_menu;
-    private ImageButton ib_menu, ib_search, ib_maps;
+    private ImageButton ib_menu, ib_search, ib_maps, ib_plus;
     private TextView tv_menutitle;
     private Toolbar toolbar;
     private ListView lv_chatroom;
@@ -41,15 +44,18 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
     private FrameLayout frame;
     private SwipeRefreshLayout refresh;
     private int toggle = 0;
-    private FragmentManager fragmentManager;
-    private MapFragment mapFragment;
-    ChatroomAdapter chatroomAdapter;
+    private SupportMapFragment mapFragment;
+    static User me;
+    static ChatroomAdapter chatroomAdapter;
     private BackPressCloseHandler backPressCloseHandler;
+    static GoogleMap mMap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting);
+
+        Intent extraintent = getIntent();
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
@@ -58,21 +64,23 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
 
         lv_chatroom.setAdapter(chatroomAdapter);
 
-        chatroomAdapter.add(new User("송민지", "~", "~", new Date()), 8, "미적 공부 같이하실분 모집합니다!");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "같이 주말마다 토익공부할 스터디원 구해요");
-        chatroomAdapter.add(new User("김철수", "~", "~", new Date()), 8, "저녁에 초밥 같이 먹으실분");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 1");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 2");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 3");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 4");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 5");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 6");
-        chatroomAdapter.add(new User("홍길동", "~", "~", new Date()), 8, "방 7");
+
+
+        me = new User(extraintent.getStringExtra("email"), extraintent.getStringExtra("email"), extraintent.getStringExtra("pwd"));
+
+        chatroomAdapter.add(new Chatroom(new User("송민지", "~", "~", new Date()), 8, "testroom1", new ArrayList<String>(), new LatLng(37.629149, 127.076532)));
+        chatroomAdapter.add(new Chatroom(new User("송민지", "~", "~", new Date()), 8, "미적 공부 같이하실분 모집합니다!", new ArrayList<String>(), new LatLng(37.628376, 127.076941)));
+        chatroomAdapter.add(new Chatroom(new User("홍길동", "~", "~", new Date()), 8, "같이 주말마다 토익공부할 스터디원 구해요",  new ArrayList<String>(), new LatLng(37.628376, 127.076941)));
+        chatroomAdapter.add(new Chatroom(new User("김철수", "~", "~", new Date()), 8, "저녁에 초밥 같이 먹으실분",  new ArrayList<String>(), new LatLng(37.629260, 127.081511)));
+        chatroomAdapter.add(new Chatroom(new User("홍길동", "~", "~", new Date()), 8, "방 1",  new ArrayList<String>(), new LatLng(37.629854, 127.075996)));
 
         lv_chatroom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                Chatroom room = (Chatroom)(chatroomAdapter.getItem(position));
+                intent.putExtra("topic", room.getTitle());
                 startActivity(intent);
             }
         });
@@ -83,6 +91,7 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
         ib_menu = (ImageButton) findViewById(R.id.ib_menu);
         ib_search = (ImageButton) findViewById(R.id.ib_submenu);
         ib_maps = (ImageButton)findViewById(R.id.ib_maps);
+        ib_plus = (ImageButton)findViewById(R.id.ib_plus) ;
         tv_menutitle = (TextView) findViewById(R.id.tv_menutitle);
         tv_menutitle.setText("모임");
         slide_menu = new SimpleSideDrawer(this);
@@ -90,8 +99,7 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
         frame = (FrameLayout)findViewById(R.id.l_frame);
         l_maps = (LinearLayout)findViewById(R.id.l_maps);
 
-        fragmentManager = getFragmentManager();
-        mapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.maps);
+        mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.maps);
         mapFragment.getMapAsync(this);
 
 
@@ -170,17 +178,29 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+        ib_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);
+                startActivity(intent);
+            }
+        });
+
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 chatroomAdapter.notifyDataSetChanged();
+                mapFragment.getMapAsync(MeetingActivity.this);
                 refresh.setRefreshing(false);
             }
         });
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
         LatLng SNUT = new LatLng(37.631916, 127.077516);
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -188,6 +208,20 @@ public class MeetingActivity extends AppCompatActivity implements OnMapReadyCall
         markerOptions.title("서울과학기술대학교");
         markerOptions.snippet("국립대학교");
         googleMap.addMarker(markerOptions);
+
+        for(int i=0; i<MeetingActivity.chatroomAdapter.getSize()-1;i++){
+            Chatroom chatroom = (Chatroom)MeetingActivity.chatroomAdapter.getItem(i);
+            LatLng temp = chatroom.getLatLng();
+            markerOptions.position(temp);
+            markerOptions.title(chatroom.getTitle());
+            if(chatroom.getPlace() == null)
+                markerOptions.snippet("");
+            else {
+                markerOptions.snippet(chatroom.getPlace().getName().toString());
+            }
+            googleMap.addMarker(markerOptions);
+
+        }
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(SNUT));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
