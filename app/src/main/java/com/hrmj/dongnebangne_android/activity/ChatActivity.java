@@ -37,11 +37,11 @@ public class ChatActivity extends AppCompatActivity  {
     private EditText et_message;
     private TextView tv_title;
     private Toolbar toolbar;
-    private String topicTitle;
+    private String title, meetingId;
     ChatAdapter m_Adapter;
     MqttClient client;
     String chatmsg;
-    String mqttMessage;
+    String mqttMessage, mqttemail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class ChatActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_chat);
 
         Intent intent = getIntent();
-        topicTitle = intent.getStringExtra("topic");
+        title = intent.getStringExtra("title");
+        meetingId = intent.getStringExtra("meetingId");
 
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -60,7 +61,7 @@ public class ChatActivity extends AppCompatActivity  {
         ib_info = (ImageButton)findViewById(R.id.ib_submenu);
         ib_info.setBackground(ContextCompat.getDrawable(this, R.drawable.chat_info));
         tv_title = (TextView)findViewById(R.id.tv_menutitle);
-        tv_title.setText(topicTitle);
+        tv_title.setText(title);
 
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,10 +84,12 @@ public class ChatActivity extends AppCompatActivity  {
         et_message = (EditText) findViewById(R.id.et_message);
 
 
+
+
         //항상 맨 밑으로 스크롤
         m_ListView.setSelection(m_Adapter.getCount() - 1);
 
-        // 엔터키로 메시지 전ㅅㅇ
+        // 엔터키로 메시지 전송
         et_message.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -99,15 +102,12 @@ public class ChatActivity extends AppCompatActivity  {
             }
         });
 
-
-     //   mqtt = new MqttClass(this);
-
         ib_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chatmsg = et_message.getText().toString();
                 try{
-                    client.publish(topicTitle+ "/" + MeetingActivity.me.getEmail(), new MqttMessage(chatmsg.getBytes()));
+                    client.publish(meetingId+ "/" + SplashActivity.me.getEmail(), new MqttMessage(chatmsg.getBytes()));
                     et_message.setText("");
                     Log.d(this.getClass().getName() + "_publish", "MQTT : simpletest 토픽으로 " + chatmsg + " 가 전달되었습니다.");
                 }catch (MqttException e) {
@@ -121,11 +121,6 @@ public class ChatActivity extends AppCompatActivity  {
 
         MQTTServer th = new MQTTServer();
         th.start();
-
-
-
-
-
     }
 
     @Override
@@ -139,12 +134,13 @@ public class ChatActivity extends AppCompatActivity  {
     }
 
     public class MQTTServer extends Thread {
+        int s = 0;
 
         Handler myhandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                m_Adapter.add(mqttMessage, 1);
+                m_Adapter.add(mqttMessage,mqttemail, 1);
                 m_Adapter.notifyDataSetChanged();
                 m_ListView.setSelection(m_Adapter.getCount() - 1);
                 Log.d(this.getClass().getName() , "MQTT : msg handler 작동.");
@@ -155,43 +151,71 @@ public class ChatActivity extends AppCompatActivity  {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                m_Adapter.add(mqttMessage, 0);
+                m_Adapter.add(mqttMessage,mqttemail, 0);
                 m_Adapter.notifyDataSetChanged();
                 m_ListView.setSelection(m_Adapter.getCount() - 1);
                 Log.d(this.getClass().getName() , "MQTT : msg handler 작동.");
 
             }
         };
+        Handler syshandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                m_Adapter.add(mqttMessage,mqttemail, 2);
+                m_Adapter.notifyDataSetChanged();
+                m_ListView.setSelection(m_Adapter.getCount() - 1);
+                Log.d(this.getClass().getName() , "MQTT : msg handler 작동.");
+
+            }
+        };
+
+
         @Override
         public void run() {
 
             try {
-                client = new MqttClient("tcp://m10.cloudmqtt.com:18670", MeetingActivity.me.getEmail(), new MemoryPersistence());
+                client = new MqttClient("tcp://m10.cloudmqtt.com:18670", SplashActivity.me.getEmail(), new MemoryPersistence());
                 MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
                 mqttConnectOptions.setPassword("Zlx8aq_Cm6Ev".toCharArray());
                 mqttConnectOptions.setUserName("stpbqlzr");
                 client.connect(mqttConnectOptions);
                 Log.d(this.getClass().getName(), "MQTT : tcp://192.168.35.91:1883 연결되었습니다.");
-                client.subscribeWithResponse(topicTitle + "/#", 1, new IMqttMessageListener() {
+                client.subscribeWithResponse(meetingId + "/#", 1, new IMqttMessageListener() {
                     @Override
                     public void messageArrived(String topic, MqttMessage message) throws Exception {
-                        if (topic.equals(topicTitle + "/" + MeetingActivity.me.getEmail())){
+                        if (topic.equals(meetingId + "/" + SplashActivity.me.getEmail())){
+                            mqttemail=SplashActivity.me.getEmail();
                             mqttMessage = message.toString();
                             Log.d(this.getClass().getName() , "MQTT : msg를 받았습니다.");
                             myhandler.sendEmptyMessage(0);
                         }
+                        else if (topic.equals(meetingId+"/SYSTEM")){
+                            mqttemail="SYSTEM";
+                            mqttMessage=message.toString();
+                            Log.d(this.getClass().getName() , "MQTT : SYS msg를 받았습니다.");
+                            syshandler.sendEmptyMessage(0);
+                        }
                         else {
+                            mqttemail = topic.replace(meetingId+"/", "");
                             mqttMessage = message.toString();
                             Log.d(this.getClass().getName(), "MQTT : msg를 받았습니다.");
                             otherhandler.sendEmptyMessage(0);
                         }
                     }
                 });
+                if(s==0) {
+                    String temp = SplashActivity.me.getEmail() + "님이 입장하셨습니다.";
+                    client.publish(meetingId + "/SYSTEM", new MqttMessage(temp.getBytes()));
+                    Log.d(this.getClass().getName() + "_publish", "MQTT : SYS.");
+                    s=1;
+                }
 
             }catch (MqttException e){
                 e.printStackTrace();
                 Log.d(this.getClass().getName() + "_subsclibe", "MQTT : tcp://192.168.35.91:1883 연결끊김 : 에러");
             }
+
         }
     }
 }

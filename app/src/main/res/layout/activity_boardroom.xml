@@ -17,7 +17,6 @@
             android:layout_marginRight="20dp"
             android:textColor="#363636"
             android:textSize="16sp"
-            android:text="제목 테스트"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/tv_boardroomDate"
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_boardroomTitle"
             android:layout_alignBottom="@id/tv_boardroomTitle"
-            android:text="09/02 15:55"
             android:textSize="10sp"
             android:textColor="#b9b9b9"
             />
@@ -36,7 +34,6 @@
             android:textSize="11sp"
             android:textColor="#b9b9b9"
             android:id="@+id/tv_boardroomContent"
-            android:text="내용 테스트\n가나다라마바사아자차카타파하 abcdefghijklmn 더매꿔야해 아아아아ㅣㄹ너이라ㅓㄴ이라ㅓㅁ;이러미아ㅓㄹ;미아러;미얾;이러ㅏㅁ;"
             android:layout_marginBottom="10dp"/>
         <LinearLayout
             android:layout_width="wrap_content"

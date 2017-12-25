@@ -2,6 +2,8 @@ package com.hrmj.dongnebangne_android.comment;
 
 import com.hrmj.dongnebangne_android.user.User;
 
+//import java.sql.Date;
+
 import java.util.Date;
 
 /**
@@ -9,21 +11,36 @@ import java.util.Date;
  */
 
 public class Comment {
-    User user;                  //익명게시판, 댓글까지 익명으로할건지 -> 그렇다면 user, date 삭제
-    String content;
-    Date createdDate, modifiedDate;
-    public Comment(User _user, String _content){
-        this.user = _user;
-        this.content = _content;
-        modifiedDate = createdDate = new Date();
+    //익명게시판, 댓글까지 익명으로할건지 -> 그렇다면 user, date 삭제
+    String content, email, commentId;
+    long createdDate, modifiedDate;
+    public Comment(String email, String content){
+        this.email = email;
+        this.content = content;
     }
 
-    public User getUser() {
-        return user;
+    public String getCommentId() {
+        return commentId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+    }
+
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getContent() {
@@ -34,19 +51,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getModifiedDate() {
+    public long getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(long modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 }

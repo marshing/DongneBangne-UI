@@ -12,6 +12,18 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6i0YgGY0MfSn6gLhXxMjKwPs5MS6XemM"/>
+        <service android:name=".service.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name=".service.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name=".service.DeleteTokenService">
+        </service>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +39,10 @@
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.EditBoardActivity"/>
         <activity android:name=".activity.BoardroomActivity"/>
-        <activity android:name=".activity.NewChatActivity" android:theme="@style/Theme.AppCompat.Light.Dialog"/>
-        <activity android:name=".activity.view.NewChatMaps" android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity android:name=".activity.dialog.NewChatMaps"/>
+        <activity android:name=".activity.NewChatDialog"  android:theme="@style/Theme.MyDialog"/>
+        <activity android:name=".activity.SplashActivity" />
+        <activity android:name=".activity.KeywordListActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6i0YgGY0MfSn6gLhXxMjKwPs5MS6XemM"

@@ -7,20 +7,33 @@
     android:id="@+id/layout"
     android:gravity="center">
 
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:id="@+id/imageViewleft"
         android:background="#888888"
-        android:layout_weight="1"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:layout_weight="1"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text"
-        android:layout_margin="5dp"/>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewleft"
+            android:textColor="#383838"
+            android:layout_gravity="left"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text"
+            android:layout_margin="5dp"/>
 
+    </LinearLayout>
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"

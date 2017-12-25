@@ -23,11 +23,12 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends BaseAdapter {
     public class ListContents{
-        String msg;
+        String msg, email;
         int type;
-        ListContents(String _msg, int _type)
+        ListContents(String _msg,String _email, int _type)
         {
             this.msg = _msg;
+            this.email=_email;
             this.type = _type;
         }
     }
@@ -38,8 +39,8 @@ public class ChatAdapter extends BaseAdapter {
         m_List = new ArrayList();
     }
 
-    public void add(String _msg, int _type){
-        m_List.add(new ListContents(_msg, _type));
+    public void add(String _msg,String _email, int _type){
+        m_List.add(new ListContents(_msg, _email, _type));
     }
 
     public void remove(int _position) {
@@ -71,6 +72,7 @@ public class ChatAdapter extends BaseAdapter {
         LinearLayout    layout = null;
         View    viewRight = null;
         View    viewLeft = null;
+        TextView    textViewLeft = null;
 
         //리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 convertView가 null인상태로 들어옴
         if(convertView == null) {
@@ -82,12 +84,14 @@ public class ChatAdapter extends BaseAdapter {
             text = (TextView) convertView.findViewById(R.id.text);
             viewRight = (View) convertView.findViewById(R.id.imageViewright);
             viewLeft = (View) convertView.findViewById(R.id.imageViewleft);
+            textViewLeft = (TextView) convertView.findViewById(R.id.textViewleft);
 
             holder = new CustomHolder();
             holder.m_TextView = text;
             holder.layout = layout;
             holder.viewRight = viewRight;
             holder.viewLeft = viewLeft;
+            holder.textViewLeft = textViewLeft;
             convertView.setTag(holder);
         }
         else {
@@ -96,8 +100,10 @@ public class ChatAdapter extends BaseAdapter {
             layout = holder.layout;
             viewRight = holder.viewRight;
             viewLeft = holder.viewLeft;
+            textViewLeft = holder.textViewLeft;
         }
 
+        textViewLeft.setText(((ListContents)m_List.get(position)).email);
         text.setText(((ListContents)m_List.get(position)).msg);
 
         if(((ListContents)m_List.get(position)).type == 0) {
@@ -106,8 +112,11 @@ public class ChatAdapter extends BaseAdapter {
             layout.setGravity(Gravity.LEFT);
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
+            textViewLeft.setVisibility(View.VISIBLE);
+            textViewLeft.setTextColor(Color.parseColor("#000000"));
         }
         else if(((ListContents)m_List.get(position)).type == 1) {
+            textViewLeft.setVisibility(View.GONE);
             text.setBackgroundResource(R.drawable.my_bubble);
             text.setTextColor(Color.parseColor("#000000"));
             layout.setGravity(Gravity.RIGHT);
@@ -116,9 +125,11 @@ public class ChatAdapter extends BaseAdapter {
         }
         if(((ListContents)m_List.get(position)).type == 2) {
             text.setBackgroundColor(Color.parseColor("#ffffffff"));
+            text.setTextColor(Color.parseColor("#000000"));
             layout.setGravity(Gravity.CENTER);
             viewRight.setVisibility(View.VISIBLE);
             viewLeft.setVisibility(View.VISIBLE);
+            textViewLeft.setVisibility(View.GONE);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -144,5 +155,6 @@ public class ChatAdapter extends BaseAdapter {
         LinearLayout layout;
         View viewRight;
         View viewLeft;
+        TextView textViewLeft;
     }
 }

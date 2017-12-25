@@ -6,7 +6,7 @@
     android:background="#ffffff">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="330dp"
         android:background="@drawable/pref_head"
         android:orientation="vertical"
         android:gravity="center_horizontal">
@@ -37,17 +37,16 @@
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="#ffffff"
-                android:layout_margin="15dp"
+                android:layout_margin="10dp"
                 />
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_centerInParent="true"
                     android:id="@+id/l_mNo"
                     android:layout_width="120dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:orientation="vertical"
                     android:gravity="center"
                     android:layout_marginRight="50dp">
@@ -59,15 +58,16 @@
                         android:textColor="#ffffff"
                         android:text="컴퓨터공학과"
                         />
-                    <TextView
+            <!--        <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tv_older"
                         android:textSize="13sp"
                         android:textColor="#ffffff"
-                        android:text="24세"/>
+                        android:text="24세"/> -->
                 </LinearLayout>
             <ImageButton
+                android:id="@+id/ib_editmajor"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/l_mNo"
                 android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:id="@+id/tv_introduction"
+                android:id="@+id/tv_greeting"
                 android:textSize="13sp"
                 android:textColor="#ffffff"
                 android:text="안녕하세요."
@@ -90,16 +90,105 @@
                 android:ellipsize="end"
                 android:layout_marginRight="50dp"/>
             <ImageButton
-                android:id="@+id/ib_editintro"
+                android:id="@+id/ib_editgreeting"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/tv_introduction"
+                android:layout_toRightOf="@id/tv_greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_mode_edit_white"/>
         </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email adress"
+                android:textColor="#363636"
+                android:textSize="15sp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ib_emailerrow"
+                android:background="@drawable/ic_keyboard_arrow_right"
+                android:layout_alignParentRight="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_emailadress"
+                android:textColor="#b9b9b9"
+                android:textSize="15sp"
+                android:layout_toLeftOf="@id/ib_emailerrow"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications"
+                android:textColor="#363636"
+                android:textSize="15sp"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Keyword setting"
+                android:textColor="#363636"
+                android:textSize="15sp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ib_keyword"
+                android:background="@drawable/ic_keyboard_arrow_right"
+                android:layout_alignParentRight="true"/></RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/tv_deleteaccount"
+                android:layout_gravity="bottom"
+                android:text="Delete account"
+                android:textSize="15sp"
+                android:textColor="#d90647"/>
+        </LinearLayout>
+
+    </LinearLayout>
+ <!--   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -121,7 +210,7 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 

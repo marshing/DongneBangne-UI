@@ -12,7 +12,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.hrmj.dongnebangne_android.R;
+import com.hrmj.dongnebangne_android.user.User;
+import com.hrmj.dongnebangne_android.user.UserManager;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by office on 2017-07-31.
@@ -24,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     private ImageButton bt_login;
     String sId, sPw;
 
+    Retrofit retrofit;
+    UserManager userManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         bt_signup = (Button) findViewById(R.id.bt_signup);
         bt_login = (ImageButton) findViewById(R.id.bt_login);
 
+
+        // id enter -> pw로 자동 커서 이동
         et_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -51,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, 1000);
             }
         });
@@ -74,13 +94,37 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                // DB에서 회원확인 후 회원 정보 받기
+                // 로그인 구현
+                retrofit = new Retrofit
+                        .Builder()
+                        .baseUrl(UserManager.API_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                userManager = retrofit.create(UserManager.class);
+
+                try {
+                    Call<User> user = userManager.searchUser(sId);
+                    Log.d(getClass().getName(), "Retrofit is connecting");
+
+                    user.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Response<User> response, Retrofit retrofit) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.d(getClass().getName(), "Retrofit connecting is failure");
+
+                        }
+                    });
+                }catch(Exception e){
+                    Log.d(getClass().getName(), "Retrofit connecting is fail");
+                }
 
 
-                Intent intent = new Intent(getApplicationContext(), MeetingActivity.class);
-                // 일단 email주소만 MainActivity로 전달 (DB구축 이후 모든 회원정보 전달)
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
                 intent.putExtra("email", sId);
-                intent.putExtra("pwd", sId);
 
                 startActivity(intent);
                 finish();

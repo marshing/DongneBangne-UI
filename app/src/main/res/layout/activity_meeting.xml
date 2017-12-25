@@ -5,8 +5,64 @@
     android:layout_height="match_parent"
     android:background="@drawable/lg_background"
     android:elevation="10dp">
-    <include
-        layout="@layout/layout_toolbar"></include>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <include
+            layout="@layout/layout_toolbar"></include>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/et_search"
+            android:visibility="invisible">
+            <requestFocus/>
+        </EditText>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <RadioGroup
+            android:id="@+id/rg_eatortalk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@id/radio_eat">
+            <RadioButton
+                android:id="@+id/radio_eat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button_eat"
+                android:layout_marginRight="10dp"/>
+            <RadioButton
+                android:id="@+id/radio_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button_talk"
+                android:layout_marginRight="10dp"/>
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/rg_busyornor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@id/radio_busy">
+            <RadioButton
+                android:id="@+id/radio_busy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button_busy"
+                android:layout_marginRight="10dp"/>
+            <RadioButton
+                android:id="@+id/radio_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button_normal"/>
+        </RadioGroup>
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,7 +80,8 @@
                     android:id="@+id/lv_chatroom"
                     android:listSelector="#00000000"
                     android:cacheColorHint="#00000000"
-                    android:divider="#00000000">
+                    android:divider="#00000000"
+                    android:textFilterEnabled="true">
                 </ListView>
             </android.support.v4.widget.SwipeRefreshLayout>
             <LinearLayout

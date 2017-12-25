@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.hrmj.dongnebangne_android.article.ArticleAndComments;
 import com.hrmj.dongnebangne_android.comment.Comment;
-import com.hrmj.dongnebangne_android.post.Post;
+import com.hrmj.dongnebangne_android.article.Article;
 import com.hrmj.dongnebangne_android.R;
+import com.hrmj.dongnebangne_android.service.PrettyTime;
 import com.hrmj.dongnebangne_android.user.User;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +25,11 @@ import java.util.List;
 public class RecommendAdapter extends BaseAdapter {
     private List<Comment> m_List;
 
-    public RecommendAdapter(Post post) {
-        m_List = post.getCommentList();
-    }
-
-    public void add(User _user, String _content){
-        m_List.add(new Comment(_user, _content));
+    public RecommendAdapter(ArticleAndComments article) {
+        if(article.getComments()!=null) {
+            m_List = article.getComments();
+            notifyDataSetChanged();
+        }else{m_List = new ArrayList<>();}
     }
 
     @Override
@@ -49,7 +51,6 @@ public class RecommendAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
         TextView tv_recommendUser, tv_recommend, tv_recommendDate;
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd hh:mm");
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,9 +63,9 @@ public class RecommendAdapter extends BaseAdapter {
 
         Comment recommend = m_List.get(position);
 
-        tv_recommendUser.setText(recommend.getUser().getName());
+        tv_recommendUser.setText(recommend.getEmail());
         tv_recommend.setText(recommend.getContent());
-        tv_recommendDate.setText(df.format(recommend.getCreatedDate()));
+        tv_recommendDate.setText(PrettyTime.formatTimeString(recommend.getCreatedDate()));
 
         return convertView;
     }

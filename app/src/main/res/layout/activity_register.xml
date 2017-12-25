@@ -8,9 +8,9 @@
     android:background="@drawable/lg_background">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/logo"
+        android:layout_width="320dp"
+        android:layout_height="150dp"
+        android:background="@drawable/dongnebangne_logo"
         android:layout_marginBottom="20dp"/>
 
 
@@ -109,6 +109,7 @@
             android:paddingRight="15dp"
             android:textColor="#636363"
             android:textSize="14sp"
+            android:inputType="textPersonName"
             android:ems="10"/>
     </LinearLayout>
     <LinearLayout
@@ -121,9 +122,26 @@
             android:layout_marginRight="30dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="birth"
+            android:text="major"
             android:textColor="#00b3f3"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:id="@+id/bt_reg_major"
+            android:background="@drawable/signup_blank"
+            android:textColor="#636363"
+            android:textSize="14sp"/>
+<!--
+        <TextView
+            android:layout_width="80dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="birth"
+            android:textColor="#00b3f3"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,7 +150,7 @@
             android:id="@+id/bt_reg_birth"
             android:background="@drawable/signup_blank"
             android:textColor="#636363"
-            android:textSize="14sp"/>
+            android:textSize="14sp"/>-->
     </LinearLayout>
 
     <LinearLayout
@@ -142,7 +160,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp">
         <ImageButton
-            android:id="@+id/bt_rg_signup"
+            android:id="@+id/ib_rg_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bt_signup"/>

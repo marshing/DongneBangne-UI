@@ -57,6 +57,11 @@ public class InprogressActivity extends AppCompatActivity {
                 Button bt_board = (Button) findViewById(R.id.bt_board);
                 Button bt_inprogress = (Button) findViewById(R.id.bt_inprogress);
                 Button bt_setting = (Button) findViewById(R.id.bt_setting);
+                TextView tv_leftname = (TextView)findViewById(R.id.tv_leftname);
+                TextView tv_leftinfo = (TextView)findViewById(R.id.tv_leftinfo);
+
+                tv_leftname.setText(SplashActivity.me.getName());
+                tv_leftinfo.setText(SplashActivity.me.getMajor());
 
                 bt_meeting.setOnClickListener(new View.OnClickListener() {
                     @Override

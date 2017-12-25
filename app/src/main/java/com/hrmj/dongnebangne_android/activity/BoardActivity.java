@@ -14,9 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hrmj.dongnebangne_android.article.Article;
 import com.hrmj.dongnebangne_android.service.BackPressCloseHandler;
 import com.hrmj.dongnebangne_android.activity.adapter.BoardroomAdapter;
-import com.hrmj.dongnebangne_android.post.Post;
 import com.hrmj.dongnebangne_android.R;
 import com.navdrawer.SimpleSideDrawer;
 
@@ -39,7 +39,7 @@ public class BoardActivity extends AppCompatActivity {
 
     private BackPressCloseHandler backPressCloseHandler;
 
-    private List<Post> items;
+    private List<Article> items;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +51,8 @@ public class BoardActivity extends AppCompatActivity {
 
         lv_boardroom = (ListView)findViewById(R.id.lv_boardroom);
         items = new ArrayList<>();
-        boardroomAdapter = new BoardroomAdapter();
+        boardroomAdapter = new BoardroomAdapter(this);
         lv_boardroom.setAdapter(boardroomAdapter);
-
-
-        boardroomAdapter.add(new Post("게시판 제목 1", "내용1", new Date(2017, 10, 11, 11, 58)));
-        boardroomAdapter.add(new Post("게시판 제목 2", "내용 12345677890 \nabcdefghijklmn", new Date(2017, 10, 12, 19, 23)));
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +78,11 @@ public class BoardActivity extends AppCompatActivity {
                 Button bt_board = (Button) findViewById(R.id.bt_board);
                 Button bt_inprogress = (Button) findViewById(R.id.bt_inprogress);
                 Button bt_setting = (Button) findViewById(R.id.bt_setting);
+                TextView tv_leftname = (TextView)findViewById(R.id.tv_leftname);
+                TextView tv_leftinfo = (TextView)findViewById(R.id.tv_leftinfo);
+
+                tv_leftname.setText(SplashActivity.me.getName());
+                tv_leftinfo.setText(SplashActivity.me.getMajor());
 
                 bt_meeting.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,7 +134,7 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), BoardroomActivity.class);
-                intent.putExtra("postNum", position);
+                intent.putExtra("articleId", boardroomAdapter.getItem(position).getArticleId());
                 startActivity(intent);
             }
         });
@@ -141,7 +142,7 @@ public class BoardActivity extends AppCompatActivity {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                boardroomAdapter.notifyDataSetChanged();
+                boardroomAdapter.refresh();
                 refresh.setRefreshing(false);
             }
         });
@@ -152,7 +153,7 @@ public class BoardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        boardroomAdapter.notifyDataSetChanged();
+        boardroomAdapter.refresh();
     }
     @Override
     public void onBackPressed() {
@@ -160,83 +161,6 @@ public class BoardActivity extends AppCompatActivity {
         backPressCloseHandler.onBackPressed();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-//        MyThread th = new MyThread();
-//        th.start();
-    }
-//
-//    final Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//
-//            Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
-//
-//            boardroomAdapter = new BoardroomAdapter();
-////
-////            String[]str = new String[items.size()];
-////            for(int i=0; i<str.length; i++){
-////                Post dto = items.get(i);
-////                //str[i] = dto.getTitle();
-////
-////                boardroomAdapter.add(dto);
-////            }
-////            boardroomAdapter.add(new Post("test" , "test"));
-//
-//            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(BoardActivity.this, android.R.layout.simple_list_item_1, str);
-//
-//            lv_boardroom.setAdapter(boardroomAdapter);
-//            boardroomAdapter.notifyDataSetChanged();
-//        }
-//    };
-
-//
-//    private class MyThread extends Thread {
-//        @Override
-//        public void run() {
-//            super.run();
-//
-//
-//            try{
-//
-//                Log.d("","로그 테스트");
-//                HttpClient http = new DefaultHttpClient();
-//                HttpPost httpPost = new HttpPost("http://192.168.35.91:8181/dongnebangne_server/json.do");
-//                HttpResponse response = http.execute(httpPost);
-//                String body = EntityUtils.toString(response.getEntity());
-//                Log.d("","로그 테스트1*");
-//                JSONObject jsonObject = new JSONObject(body);
-//                Log.d("","로그 테스트2");
-//                JSONArray jArray = (JSONArray)jsonObject.get("sendData");
-//
-//                Log.d("","로그 테스트3");
-//                for(int i=0; i<jArray.length(); i++){
-//
-//                    Log.d("","for문 i : "+i);
-//                    SimpleDateFormat format = new SimpleDateFormat("MM/dd hh:mm");
-//                    JSONObject row = jArray.getJSONObject(i);
-//                    Post dto = new Post(row.getString("pTitle"), row.getString("pContent"));
-////                dto.setTitle(row.getString("pTitle"));
-////                dto.setContent(row.getString("pContent"));
-////                String tempDate = row.getString("pCreatedDate");
-////                dto.setCreatedDate(format.parse(tempDate));
-////                dto.setModifiedDate(format.parse(tempDate));
-////                dto.setThumb(row.getInt("pThumb"));
-////                dto.setCommentList(new ArrayList<Comment>());
-//                    items.add(dto);
-//
-//                }
-//                Log.d("","for문 통과");
-//                handler.sendEmptyMessage(0);
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
 
 
