@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Intent extraintent = getIntent();
+        final Intent extraintent = getIntent();
 
         Intent service = new Intent(this, DeleteTokenService.class);
         startService(service);
@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity{
                     me = response.body();
                     Log.d(getClass().getName(), "Retrofit on Resp");
                     Log.d(getClass().getName(), ""+response.code());
-                    if(response.code()==200){
+                    if(response.code()==200 && me.getPassword().equals(extraintent.getStringExtra("pwd"))){
                         if(me.getHastags()!=null) {
                             for (int i = 0; i < me.getHastags().size(); i++){
                                 FirebaseMessaging.getInstance().subscribeToTopic(me.getHastags().get(i));

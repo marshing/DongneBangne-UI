@@ -125,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
                 intent.putExtra("email", sId);
+                intent.putExtra("pwd", sPw);
 
                 startActivity(intent);
                 finish();

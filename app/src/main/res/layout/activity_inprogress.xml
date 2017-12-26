@@ -3,10 +3,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a3c6e4"
+    android:background="@drawable/lg_background"
     android:elevation="10dp">
-    <include
-        layout="@layout/layout_toolbar"></include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            layout="@layout/layout_toolbar"></include>
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/et_inp_search"
+            android:visibility="invisible">
+            <requestFocus/>
+        </EditText>
+    </RelativeLayout>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -8,14 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hrmj.dongnebangne_android.activity.SplashActivity;
+import com.hrmj.dongnebangne_android.article.Article;
 import com.hrmj.dongnebangne_android.article.ArticleManager;
+import com.hrmj.dongnebangne_android.chat.Chat;
 import com.hrmj.dongnebangne_android.chatroom.Chatroom;
 import com.hrmj.dongnebangne_android.R;
 import com.hrmj.dongnebangne_android.chatroom.MeetingManager;
-import com.hrmj.dongnebangne_android.user.User;
+import com.hrmj.dongnebangne_android.service.PrettyTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +32,23 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 /**
- * Created by office on 2017-09-04.
+ * Created by office on 2017-08-05.
  */
 
-public class InprogressAdapter extends BaseAdapter {
+public class InprogressAdapter extends BaseAdapter implements Filterable{
 
 
-    private List<Chatroom> m_List=new ArrayList<>();
+    private List<Chatroom> origin_List = new ArrayList<>();
+    private List<Chatroom> m_List = new ArrayList<>();
     Activity activity;
     private Retrofit retrofit;
     private MeetingManager meetingManager;
-    private ProgressDialog mProgressDialog;
+    private  ProgressDialog mProgressDialog;
+    private Filter listFilter;
+    private String me;
 
-    public InprogressAdapter(Activity parentactivity){
+    public InprogressAdapter(Activity parentactivity, String id){
+        this.me = id;
         this.activity = parentactivity;
         retrofit = new Retrofit
                 .Builder()
@@ -58,7 +67,8 @@ public class InprogressAdapter extends BaseAdapter {
                     Log.d(getClass().getName(), ""+response.code());
                     mProgressDialog.dismiss();
                     if(response.code()==200){
-                        m_List=response.body();
+                        origin_List=response.body();
+                        m_List=origin_List;
                         Log.d(getClass().getName(), "MeetingList");
                         notifyDataSetChanged();
                         mProgressDialog.dismiss();
@@ -117,12 +127,40 @@ public class InprogressAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return m_List.size();
+
+
+        int size = 0;
+
+        int fullSize = m_List.size();
+
+
+
+        for(int i=0; i<fullSize; i++){
+            if(m_List.get(i).getPeoples().contains(me))
+                size++;
+        }
+
+        return size;
     }
 
     @Override
     public Object getItem(int position) {
-        return m_List.get(position);
+        Chatroom temp;
+
+        int itemIndex=0;
+        int fullSize=m_List.size();
+
+        for(int i=0;i<fullSize;i++){
+            temp = m_List.get(i);
+            if(temp.getPeoples().contains(me)){
+                if(position==itemIndex)
+                    return temp;
+                itemIndex++;
+            }
+
+        }
+
+        return null;
     }
 
     public int getSize() {
@@ -139,7 +177,7 @@ public class InprogressAdapter extends BaseAdapter {
 
         final Context context = parent.getContext();
 
-        TextView tv_roomtitle;
+        TextView tv_roomtitle, tv_roomtag, tv_roompeoplenum, tv_date;
         TextView tv_joinuser[] = new TextView[8];
 
         if(convertView == null){
@@ -147,7 +185,17 @@ public class InprogressAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.layout_chatroomitem, parent, false);
         }
 
+        Chatroom chatroom= (Chatroom) getItem(position);
+
+        String roomtag = new String(chatroom.getHashtags().toString());
+        String roompeoplenum = new String(""+chatroom.getPeoples().size()+" members");
+        String date = new String(PrettyTime.formatTimeString(chatroom.getCreatedDate()));
+
+
         tv_roomtitle = (TextView) convertView.findViewById(R.id.tv_roomtitle);
+        tv_date = (TextView) convertView.findViewById(R.id.tv_roomdate);
+        tv_roompeoplenum = (TextView) convertView.findViewById(R.id.tv_roompeoplenum);
+        tv_roomtag = (TextView) convertView.findViewById(R.id.tv_roomtag);
         tv_joinuser[0] = (TextView) convertView.findViewById(R.id.tv_joinuser1);
         tv_joinuser[1] = (TextView) convertView.findViewById(R.id.tv_joinuser2);
         tv_joinuser[2] = (TextView) convertView.findViewById(R.id.tv_joinuser3);
@@ -157,14 +205,61 @@ public class InprogressAdapter extends BaseAdapter {
         tv_joinuser[6] = (TextView) convertView.findViewById(R.id.tv_joinuser7);
         tv_joinuser[7] = (TextView) convertView.findViewById(R.id.tv_joinuser8);
 
-        Chatroom chatroom = m_List.get(position);
-
         tv_roomtitle.setText(chatroom.getTitle());
+        tv_date.setText(date);
+        tv_roompeoplenum.setText(roompeoplenum);
+        tv_roomtag.setText(roomtag);
         for(int i=0; i<chatroom.getPeoples().size(); i++){
             tv_joinuser[i].setText(chatroom.getPeoples().get(i));
         }
 
 
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(listFilter==null){
+            listFilter = new ListFilter();
+        }
+        return listFilter;
+    }
+
+    private class ListFilter extends Filter{
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults results = new FilterResults();
+
+            if(charSequence==null || charSequence.length()==0){
+                results.values = origin_List;
+                results.count = origin_List.size();
+            }else{
+                List<Chatroom> itemList = new ArrayList<>();
+
+                for(Chatroom chatroom : origin_List){
+                    if(chatroom.getTitle().toUpperCase().contains(charSequence.toString().toUpperCase()) ||
+                            chatroom.getHashtags().toString().toUpperCase().contains(charSequence.toString().toUpperCase())){
+                        itemList.add(chatroom);
+                    }
+                }
+
+                results.values = itemList;
+                results.count = itemList.size();
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            m_List = (ArrayList<Chatroom>) filterResults.values;
+
+            if(filterResults.count>0){
+                notifyDataSetChanged();
+            }else{
+                notifyDataSetInvalidated();
+            }
+
+        }
     }
 }
